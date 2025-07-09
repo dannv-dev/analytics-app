@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Link, useLocation } from "react-router-dom";
 import {
   BarChart3,
   Users,
@@ -23,59 +24,52 @@ const navigation = [
     name: "Overview",
     href: "/",
     icon: Home,
-    current: true,
   },
   {
     name: "Analytics",
     href: "/analytics",
     icon: BarChart3,
-    current: false,
   },
   {
     name: "Users",
     href: "/users",
     icon: Users,
-    current: false,
   },
   {
     name: "Performance",
     href: "/performance",
     icon: TrendingUp,
-    current: false,
   },
   {
     name: "Reports",
     href: "/reports",
     icon: PieChart,
-    current: false,
   },
   {
     name: "Activity",
     href: "/activity",
     icon: Activity,
-    current: false,
   },
   {
     name: "Goals",
     href: "/goals",
     icon: Target,
-    current: false,
   },
   {
     name: "Events",
     href: "/events",
     icon: Calendar,
-    current: false,
   },
   {
     name: "Documents",
     href: "/documents",
     icon: FileText,
-    current: false,
   },
 ];
 
 export function Sidebar({ className }: SidebarProps) {
+  const location = useLocation();
+
   return (
     <div className={cn("flex flex-col h-full", className)}>
       <div className="px-6 py-4">
@@ -94,22 +88,23 @@ export function Sidebar({ className }: SidebarProps) {
         <nav className="space-y-1">
           {navigation.map((item) => {
             const Icon = item.icon;
+            const isActive = location.pathname === item.href;
             return (
               <Button
                 key={item.name}
-                variant={item.current ? "secondary" : "ghost"}
+                variant={isActive ? "secondary" : "ghost"}
                 className={cn(
                   "w-full justify-start gap-3 px-3 py-2 text-sm font-medium",
-                  item.current
+                  isActive
                     ? "bg-secondary text-secondary-foreground"
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary/50",
                 )}
                 asChild
               >
-                <a href={item.href}>
+                <Link to={item.href}>
                   <Icon className="w-4 h-4" />
                   {item.name}
-                </a>
+                </Link>
               </Button>
             );
           })}
